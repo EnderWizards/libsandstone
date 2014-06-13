@@ -1,5 +1,10 @@
 package lib.enderwizards.sandstone.util.misc;
 
+/**
+ * Duo, a simple generic class for holding two items. The two items held in the Duo are immutable.
+ *
+ * @author TheMike
+ */
 public class Duo<K, V> {
 
     public final K one;
