@@ -11,6 +11,7 @@ import java.util.Map;
  * A language file 'preprocessor', I guess you could call it. It just injects globals right now.
  *
  * @author TheMike
+ * @author x3n0ph0b3
  */
 @SideOnly(Side.CLIENT)
 public class LanguageHelper {

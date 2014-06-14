@@ -14,6 +14,7 @@ import net.minecraft.item.Item;
  * ContentHandler will ignore any classes and subclasses without the annotation.
  *
  * @author TheMike
+ * @author x3n0ph0b3
  */
 public class ContentHandler {
 

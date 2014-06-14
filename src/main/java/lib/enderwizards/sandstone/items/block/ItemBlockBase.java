@@ -1,29 +1,30 @@
-package lib.enderwizards.sandstone.items;
+package lib.enderwizards.sandstone.items.block;
 
 import com.google.common.collect.ImmutableMap;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import lib.enderwizards.sandstone.mod.ModRegistry;
-import lib.enderwizards.sandstone.util.LanguageHelper;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import lib.enderwizards.sandstone.util.LanguageHelper;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
+import java.util.Map;
 
 /**
- * ItemBase, a helper class for items. Handles language names, language
- * tooltips, and icon registering.
+ * ItemBlockBase, a helper class for item blocks. Handles language names and language
+ * parsing (see LanguageHelper).
+ *
+ * In most ways, completely similar to ItemBase.
  *
  * @author TheMike
  */
-public class ItemBase extends Item {
+public class ItemBlockBase extends ItemBlock {
 
-    public ItemBase(String langName) {
-        this.setUnlocalizedName(langName);
+    public ItemBlockBase(Block block) {
+        super(block);
     }
 
     /**
@@ -40,20 +41,23 @@ public class ItemBase extends Item {
      * entry 'item.unlocalizedName.tooltip'. Has support for Handlebars-style
      * templating, and line breaking using '\n'.
      *
-     * @param toFormat An ImmutableMap that has all the regex keys and values. Regex
-     *                 strings are handled on the tooltip by including '{{regexKey}}'
-     *                 with your regex key, of course.
-     * @param stack    The ItemStack passed from addInformation.
-     * @param list     List of description lines passed from addInformation.
+     * @param toFormat
+     *            An ImmutableMap that has all the regex keys and values. Regex
+     *            strings are handled on the tooltip by including '{{regexKey}}'
+     *            with your regex key, of course.
+     * @param stack
+     *            The ItemStack passed from addInformation.
+     * @param list
+     *            List of description lines passed from addInformation.
      */
     public void formatTooltip(ImmutableMap<String, String> toFormat, ItemStack stack, List list) {
-        String langTooltip = LanguageHelper.getLocalization(this.getUnlocalizedName(stack) + ".tooltip");
+        String langTooltip = LanguageHelper.getLocalization(this.getUnlocalizedNameInefficiently(stack) + ".tooltip");
         if (langTooltip == null)
             return;
         if (toFormat != null) {
-            Iterator<Entry<String, String>> entrySet = toFormat.entrySet().iterator();
+            Iterator<Map.Entry<String, String>> entrySet = toFormat.entrySet().iterator();
             while (entrySet.hasNext()) {
-                Entry<String, String> toReplace = entrySet.next();
+                Map.Entry<String, String> toReplace = entrySet.next();
                 langTooltip = langTooltip.replace("{{" + toReplace.getKey() + "}}", toReplace.getValue());
             }
         }
@@ -68,12 +72,6 @@ public class ItemBase extends Item {
     @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack stack) {
         return LanguageHelper.getLocalization(this.getUnlocalizedNameInefficiently(stack) + ".name");
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister iconRegister) {
-        itemIcon = iconRegister.registerIcon(ModRegistry.getID(this.getClass().getCanonicalName()) + ":" + this.getUnlocalizedName().substring(5));
     }
 
 }
