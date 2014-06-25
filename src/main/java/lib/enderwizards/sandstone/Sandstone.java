@@ -10,6 +10,9 @@ import lib.enderwizards.sandstone.mod.ModRegistry;
 import lib.enderwizards.sandstone.mod.SandstoneMod;
 import lib.enderwizards.sandstone.util.LanguageHelper;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,6 +26,7 @@ public class Sandstone {
     public static Logger LOGGER = LogManager.getLogger("libSandstone");
     
     @EventHandler
+    @SideOnly(Side.CLIENT)
     public void preInit(FMLPreInitializationEvent event) {
         /* Unicode colors that you can use in the tooltips/names lang files.
          * Use by calling {{!name}}, with name being the name being colors.color. */
