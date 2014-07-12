@@ -28,7 +28,9 @@ public class LanguageHelper {
     public static String getLocalization(String key) {
         String localization = getLocalization(key, true);
 
-        if (localization.contains("{{!")) {
+        if (preprocesssed.containsKey(key)) {
+            return preprocesssed.get(key);
+        } else if (localization.contains("{{!")) {
             while (localization.contains("{{!")) {
                 int startingIndex = localization.indexOf("{{!");
                 int endingIndex = localization.substring(startingIndex).indexOf("}}") + startingIndex;
@@ -43,8 +45,6 @@ public class LanguageHelper {
             }
 
             preprocesssed.put(key, localization);
-        } else if (preprocesssed.containsKey(key)) {
-            return preprocesssed.get(key);
         }
         return localization;
     }

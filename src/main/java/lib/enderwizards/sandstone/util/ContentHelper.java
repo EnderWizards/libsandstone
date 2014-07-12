@@ -18,7 +18,7 @@ public class ContentHelper {
      * @param block
      *            The block to get the identifier from.
      */
-    public static String getIndent(Block block) {
+    public static String getIdent(Block block) {
         return block == null ? null : Block.blockRegistry.getNameForObject(block);
     }
 
@@ -44,7 +44,7 @@ public class ContentHelper {
      * Returns true if the block identifier of block1 matches that of block2. Returns false otherwise.
      */
     public static boolean areBlocksEqual(Block block1, Block block2) {
-        return getIndent(block1).equals(getIndent(block2));
+        return getIdent(block1).equals(getIdent(block2));
     }
 
 }
