@@ -1,10 +1,10 @@
 package lib.enderwizards.sandstone.mod;
 
-import cpw.mods.fml.common.Mod;
-import lib.enderwizards.sandstone.util.misc.Duo;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import lib.enderwizards.sandstone.util.misc.Duo;
+import cpw.mods.fml.common.Mod;
 
 /**
  * A simple registry for holding information about mods registered with Sandstone.

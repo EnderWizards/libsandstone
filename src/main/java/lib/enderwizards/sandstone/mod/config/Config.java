@@ -1,34 +1,44 @@
 package lib.enderwizards.sandstone.mod.config;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import cpw.mods.fml.client.config.IConfigElement;
-import cpw.mods.fml.common.ModContainer;
+import org.github.trainerguy22.jtoml.impl.Toml;
 
-public interface Config {
+import cpw.mods.fml.client.config.IConfigElement;
+
+public abstract class Config {
 	
-	public void require(String group, String key, Object fallback);
+	public static Config toml(File file) {
+		try {
+			file.createNewFile();
+			return new ConfigImpl(file, Toml.parse(file));
+		} catch (IOException e) { e.printStackTrace(); }
+		return null;
+	}	
+	
+	public abstract void require(String group, String key, Object fallback);
 		
-	public Object get(String group, String key);
+	public abstract Object get(String group, String key);
 	
-	public Integer getInt(String group, String key);
+	public abstract Integer getInt(String group, String key);
 	
-	public boolean getBool(String group, String key);
+	public abstract boolean getBool(String group, String key);
 	
-	public List<String> getGroups();
+	public abstract List<String> getGroups();
 	
-	public Map<String, Object> getGroup(String group);
+	public abstract Map<String, Object> getGroup(String group);
 	
-	public List<Object> getKeys(String group);
+	public abstract List<Object> getKeys(String group);
 	
-	public File getFile();
+	public abstract File getFile();
 	
-	public void set(String group, String key, Object value);
+	public abstract void set(String group, String key, Object value);
 		
-	public List<IConfigElement> toGui(String mod_id);
+	public abstract List<IConfigElement> toGui(String mod_id);
 	
-	public void save();
+	public abstract void save();
 
 }

@@ -1,15 +1,9 @@
 package lib.enderwizards.sandstone.mod.config;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-
-import com.google.common.collect.ImmutableMap;
 
 import lib.enderwizards.sandstone.util.LanguageHelper;
 import cpw.mods.fml.client.config.ConfigGuiType;
@@ -56,6 +50,8 @@ public class ConfigElement<T> implements IConfigElement<T> {
 
 	@Override
 	public Class<? extends IConfigEntry> getConfigEntryClass() {
+		if(getType(config.get(group, key)) == ConfigGuiType.CONFIG_CATEGORY)
+			return ItemCategoryEntry.class;
 		return null;
 	}
 
@@ -104,11 +100,13 @@ public class ConfigElement<T> implements IConfigElement<T> {
 	}
 	
 	public static ConfigElement<?> getTypedElement(String mod_id, String group, String key, Map<String, Object> value, Map<String, Object> def) {
-		if(getType(value) == null) {
+		ConfigGuiType type = getType(value);
+		
+		if(type == null) {
 			return new ConfigElement<String>(mod_id, key, value, def);
 		}
 		
-		switch(getType(value)) {
+		switch(type) {
 		case BOOLEAN:
 		    return new ConfigElement<Boolean>(mod_id, key, value, def);
 		case DOUBLE:

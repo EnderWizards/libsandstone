@@ -1,20 +1,20 @@
 package lib.enderwizards.sandstone;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.LoaderState;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import lib.enderwizards.sandstone.init.ContentHandler;
 import lib.enderwizards.sandstone.mod.ModRegistry;
 import lib.enderwizards.sandstone.mod.SandstoneMod;
 import lib.enderwizards.sandstone.util.LanguageHelper;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.LoaderState;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 // I'll probably end up using the Mod aspect of this for something, eventually.
 @Mod(modid = "libsandstone", name = "libsandstone", version = "1.0.0")

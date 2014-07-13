@@ -1,11 +1,11 @@
 package lib.enderwizards.sandstone.util;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.util.StatCollector;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import net.minecraft.util.StatCollector;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * A language file 'preprocessor', I guess you could call it. It just injects globals right now.

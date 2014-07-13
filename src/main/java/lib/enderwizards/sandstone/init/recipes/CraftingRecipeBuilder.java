@@ -1,14 +1,19 @@
 package lib.enderwizards.sandstone.init.recipes;
 
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.registry.GameRegistry;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import lib.enderwizards.sandstone.Sandstone;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
 import org.apache.commons.lang3.ArrayUtils;
 
-import java.util.*;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * A builder for crafting table recipes. Why use it? Because it makes your code look very, very clean. And awesome. :D

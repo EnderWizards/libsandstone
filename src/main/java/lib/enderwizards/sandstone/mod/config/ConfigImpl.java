@@ -8,13 +8,9 @@ import java.util.Map;
 
 import org.github.trainerguy22.jtoml.impl.Toml;
 
-import com.google.common.collect.ImmutableMap;
-
 import cpw.mods.fml.client.config.IConfigElement;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.ModContainer;
 
-public class ConfigImpl implements Config {
+public class ConfigImpl extends Config {
 	
 	private Map<String, Object> config;
 	private Map<String, Object> defaults = new HashMap<String, Object>();
@@ -107,6 +103,8 @@ public class ConfigImpl implements Config {
 	public List<IConfigElement> toGui(String mod_id) {
 		List<IConfigElement> elements = new ArrayList<IConfigElement>();
 		for(String key : config.keySet()) {
+			if(!defaults.containsKey(key))
+				continue;
 			try {
 				elements.add(ConfigElement.getTypedElement(mod_id, key, config, defaults));
 			} catch(Exception e) {

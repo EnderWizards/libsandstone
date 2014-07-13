@@ -1,17 +1,19 @@
 package lib.enderwizards.sandstone.items.block;
 
-import com.google.common.collect.ImmutableMap;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import lib.enderwizards.sandstone.util.LanguageHelper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import lib.enderwizards.sandstone.util.LanguageHelper;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import com.google.common.collect.ImmutableMap;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * ItemBlockBase, a helper class for item blocks. Handles language names and language

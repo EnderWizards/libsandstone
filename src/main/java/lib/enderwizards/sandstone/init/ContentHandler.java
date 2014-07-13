@@ -1,11 +1,13 @@
 package lib.enderwizards.sandstone.init;
 
-import com.google.common.reflect.ClassPath;
-import cpw.mods.fml.common.registry.GameRegistry;
 import lib.enderwizards.sandstone.Sandstone;
 import lib.enderwizards.sandstone.mod.ModRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+
+import com.google.common.reflect.ClassPath;
+
+import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
  * ContentHandler takes care of initializing all of your blocks/items for you.
