@@ -30,6 +30,13 @@ buildscript {
     }
 }
 
+repositories {
+  maven {
+    name = "trainerguy22"
+    url = "http://trainerguy22.github.io/builds/maven/"
+  }
+}
+
 // We apply the 'forge' plugin, so ForgeGradle can do it's stuff.
 apply plugin: 'forge'
 
@@ -42,8 +49,7 @@ minecraft {
 }
 
 dependencies {
-  // From Maven Central.
-  compile 'io.ous:jtoml:1.0.1'
+  compile 'trainerguy22:jtoml:1.0.0'
 }
 
 processResources {
