@@ -1,10 +1,15 @@
 package lib.enderwizards.sandstone.mod.config;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+
+import com.google.common.collect.ImmutableMap;
 
 import lib.enderwizards.sandstone.util.LanguageHelper;
 import cpw.mods.fml.client.config.ConfigGuiType;
@@ -17,25 +22,33 @@ public class ConfigElement<T> implements IConfigElement<T> {
 	private boolean isProperty;
 	
 	private String mod_id;
+	
+	private String group;
 	private String key;
+			
+	private Config config;
+	private Config def;
 	
-	private Object object;
-	private Object def;
+	public ConfigElement(String mod_id, String key, Map<String, Object> config, Map<String, Object> def) {
+		this(mod_id, "", key, config, def);
+	}
 	
-	public ConfigElement(String mod_id, String key, Object object, Object def) {
+	public ConfigElement(String mod_id, String group, String key, Map<String, Object> config, Map<String, Object> def) {
 		this.mod_id = mod_id;
+						
+		this.group = group;
 		this.key = key;
 		
-		this.object = object;
-		this.def = def;
-		if(object instanceof Map) {
+		this.config = new ConfigImpl(null, config);
+		this.def = new ConfigImpl(null, def);
+		if(this.config.get(group, key) instanceof Map) {
 			isProperty = false;
-			assert(def instanceof Map);
+			assert(this.def.get(group, key) instanceof Map);
 		} else {
 			isProperty = true;
 		}
 	}
-
+	
 	@Override
 	public boolean isProperty() {
 		return isProperty;
@@ -43,13 +56,11 @@ public class ConfigElement<T> implements IConfigElement<T> {
 
 	@Override
 	public Class<? extends IConfigEntry> getConfigEntryClass() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Class<? extends IArrayEntry> getArrayEntryClass() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -76,19 +87,23 @@ public class ConfigElement<T> implements IConfigElement<T> {
 	@Override
 	public List<IConfigElement> getChildElements() {
 		List<IConfigElement> elements = new ArrayList<IConfigElement>();
-		Map<String, Object> map = ((Map) object); 
-		for(String key : map.keySet()) {
-			elements.add(getTypedElement(mod_id, key, map.get(key), ((Map) def).get(key)));
+		Map<String, Object> map = config.getGroup(key); 
+		for(String key1 : map.keySet()) {
+			elements.add(getTypedElement(mod_id, key, key1, map, (Map) def.get("", key)));
 		}
 		return elements;
 	}
 
 	@Override
 	public ConfigGuiType getType() {
-		return getType(object);
+		return getType(config.get(group, key));
 	}
 	
-	public static IConfigElement<?> getTypedElement(String mod_id, String key, Object value, Object def) {
+	public static ConfigElement<?> getTypedElement(String mod_id, String key, Map<String, Object> value, Map<String, Object> def) {
+		return getTypedElement(mod_id, "", key, value, def);
+	}
+	
+	public static ConfigElement<?> getTypedElement(String mod_id, String group, String key, Map<String, Object> value, Map<String, Object> def) {
 		if(getType(value) == null) {
 			return new ConfigElement<String>(mod_id, key, value, def);
 		}
@@ -120,7 +135,7 @@ public class ConfigElement<T> implements IConfigElement<T> {
 
 	@Override
 	public boolean isList() {
-		return object instanceof List;
+		return config.get(group, key) instanceof List;
 	}
 
 	@Override
@@ -135,22 +150,22 @@ public class ConfigElement<T> implements IConfigElement<T> {
 
 	@Override
 	public boolean isDefault() {
-		return false;
+		return config.get(group, key) == def.get(group, key);
 	}
 
 	@Override
 	public Object getDefault() {
-		return object == def;
+		return def.get(group, key);
 	}
 
 	@Override
 	public Object[] getDefaults() {
-		return new Object[]{ def };
+		return new Object[]{ def.get(group, key) };
 	}
 
 	@Override
 	public void setToDefault() {
-		object = def;
+		config.set(group, key, def.get(group, key));;
 	}
 
 	@Override
@@ -170,27 +185,23 @@ public class ConfigElement<T> implements IConfigElement<T> {
 
 	@Override
 	public Object get() {
-		return object;
+		return config.get(group, key);
 	}
 
 	@Override
 	public Object[] getList() {
-		return ((List) object).toArray();
+		return ((List<Object>) config.get(group, key)).toArray();
 	}
 
 	@Override
 	public void set(T value) {
-		object = value;
+		config.set(group, key, value);
 	}
 
 	@Override
 	public void set(T[] aVal) {
-		if(object instanceof List) {
-			List list = ((List) object);
-			list.clear();
-			for(Object obj : aVal) {
-				list.add(obj);
-			}
+		if(isProperty) {
+			config.set(group, key, aVal);
 		}
 	}
 

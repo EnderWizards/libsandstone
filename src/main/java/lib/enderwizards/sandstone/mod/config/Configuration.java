@@ -15,10 +15,10 @@ import org.github.trainerguy22.jtoml.impl.Toml;
  */
 public class Configuration {
 
-	public static TomlConfig toml(File file) {
+	public static ConfigImpl toml(File file) {
 		try {
 			file.createNewFile();
-			return new TomlConfig(file, Toml.parse(file));
+			return new ConfigImpl(file, Toml.parse(file));
 		} catch (IOException e) { e.printStackTrace(); }
 		return null;
 	}
