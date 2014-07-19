@@ -49,8 +49,14 @@ minecraft {
 }
 
 dependencies {
-  compile 'trainerguy22:jtoml:1.0.1'
-  runtime 'trainerguy22:jtoml:1.0.1'
+	compile 'trainerguy22:jtoml:1.0.1'
+}
+
+jar {
+	from configurations.compile.findAll {
+    	}.collect {
+        	it.directory ? it : zipTree(it)
+    	}
 }
 
 processResources {
