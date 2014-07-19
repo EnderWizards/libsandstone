@@ -1,0 +1,20 @@
+[
+{
+  "modid": "libsandstone",
+  "name": "libsandstone",
+  "description": "Sandstone, the foundation for pyramids. Another modding framework.",
+  "version": "1.0.0",
+  "mcversion": "1.7.10",
+  "url": "",
+  "updateUrl": "",
+  "authorList": [
+    "x3n0ph0b3",
+    "TheMike"],
+  "credits": "",
+  "screenshots": [
+  ],
+  "parent": "",
+  "dependencies": [
+  ]
+}
+]
