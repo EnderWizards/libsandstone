@@ -49,7 +49,7 @@ minecraft {
 }
 
 dependencies {
-  compile 'trainerguy22:jtoml:1.0.1'
+  runtime 'trainerguy22:jtoml:1.0.1'
 }
 
 processResources {
