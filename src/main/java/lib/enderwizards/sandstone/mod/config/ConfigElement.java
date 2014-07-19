@@ -1,11 +1,11 @@
 package lib.enderwizards.sandstone.mod.config;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import lib.enderwizards.sandstone.util.LanguageHelper;
 import cpw.mods.fml.client.config.ConfigGuiType;
 import cpw.mods.fml.client.config.GuiConfigEntries.IConfigEntry;
 import cpw.mods.fml.client.config.GuiEditArrayEntries.IArrayEntry;
@@ -15,7 +15,7 @@ public class ConfigElement<T> implements IConfigElement<T> {
 	
 	private boolean isProperty;
 	
-	private String mod_id;
+	public String mod_id;
 	
 	private String group;
 	private String key;
@@ -50,8 +50,6 @@ public class ConfigElement<T> implements IConfigElement<T> {
 
 	@Override
 	public Class<? extends IConfigEntry> getConfigEntryClass() {
-		if(getType(config.get(group, key)) == ConfigGuiType.CONFIG_CATEGORY)
-			return ItemCategoryEntry.class;
 		return null;
 	}
 
@@ -77,7 +75,7 @@ public class ConfigElement<T> implements IConfigElement<T> {
 
 	@Override
 	public String getComment() {
-		return LanguageHelper.getLocalization(mod_id + ".configgui." + this.getName() + ".tooltip");
+		return "";
 	}
 
 	@Override
@@ -92,6 +90,12 @@ public class ConfigElement<T> implements IConfigElement<T> {
 
 	@Override
 	public ConfigGuiType getType() {
+        if(def.get(group, key) instanceof ConfigReference) {
+            ConfigGuiType type = ((ConfigReference) def.get(group, key)).type;
+            if(type != null) {
+              return type;
+            }
+        }
 		return getType(config.get(group, key));
 	}
 	
@@ -133,7 +137,7 @@ public class ConfigElement<T> implements IConfigElement<T> {
 
 	@Override
 	public boolean isList() {
-		return config.get(group, key) instanceof List;
+		return get() instanceof List;
 	}
 
 	@Override
@@ -148,27 +152,35 @@ public class ConfigElement<T> implements IConfigElement<T> {
 
 	@Override
 	public boolean isDefault() {
-		return config.get(group, key) == def.get(group, key);
+        if(get() instanceof List) {
+            return Arrays.deepEquals(((List) get()).toArray(), getDefaults());
+        } else {
+		    return config.get(group, key) == def.get(group, key);
+        }
 	}
 
 	@Override
 	public Object getDefault() {
-		return def.get(group, key);
+		return ((ConfigReference) def.get(group, key)).defaultValue;
 	}
 
 	@Override
 	public Object[] getDefaults() {
-		return new Object[]{ def.get(group, key) };
+        if(get() instanceof List) {
+            return ((List) get()).toArray();
+        } else {
+            return new Object[]{ getDefault() };
+        }
 	}
 
 	@Override
 	public void setToDefault() {
-		config.set(group, key, def.get(group, key));;
+		config.set(group, key, ((ConfigReference) def.get(group, key)).defaultValue);
 	}
 
 	@Override
 	public boolean requiresWorldRestart() {
-		return true;
+		return false;
 	}
 
 	@Override
@@ -188,7 +200,7 @@ public class ConfigElement<T> implements IConfigElement<T> {
 
 	@Override
 	public Object[] getList() {
-		return ((List<Object>) config.get(group, key)).toArray();
+		return ((List) config.get(group, key)).toArray();
 	}
 
 	@Override
@@ -210,12 +222,12 @@ public class ConfigElement<T> implements IConfigElement<T> {
 
 	@Override
 	public T getMinValue() {
-		return (T) String.valueOf(Integer.MIN_VALUE);
+        return (T) String.valueOf(((ConfigReference) def.get(group, key)).minimum);
 	}
 
 	@Override
 	public T getMaxValue() {
-		return (T) String.valueOf(Integer.MAX_VALUE);
+        return (T) String.valueOf(((ConfigReference) def.get(group, key)).maximum);
 	}
 
 	@Override

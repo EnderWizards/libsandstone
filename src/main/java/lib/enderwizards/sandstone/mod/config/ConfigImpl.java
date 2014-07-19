@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 import org.github.trainerguy22.jtoml.impl.Toml;
 
 import cpw.mods.fml.client.config.IConfigElement;
@@ -29,14 +31,17 @@ public class ConfigImpl extends Config {
 		return defaults.get(group) instanceof Map ? ((Map<String, Object>) defaults.get(group)) : null;
 	}
 	
-	public void require(String group, String key, Object fallback) {
+	public void require(String group, String key, ConfigReference def) {
+        if(def.side == Side.CLIENT && FMLCommonHandler.instance().getSide() == Side.SERVER)
+            return;
+
 		if(getDefaultGroup(group) == null) {
 			if(defaults.get(group) != null) {
 				defaults.remove(group);
 			}
-			defaults.put(group, new HashMap<String, Object>());
+			defaults.put(group, new HashMap<String, ConfigReference>());
 		}
-		getDefaultGroup(group).put(key, fallback);
+		getDefaultGroup(group).put(key, def);
 		
 		if(getGroup(group) == null) {
 			if(config.get(group) != null) {
@@ -47,13 +52,18 @@ public class ConfigImpl extends Config {
 		
 		if(getGroup(group).containsKey(key))
 			return;
-		getGroup(group).put(key, fallback);
+		getGroup(group).put(key, def.defaultValue);
 	}
 	
 	public Object get(String group, String key) {
-		if(getGroup(group) == null)
-			return config.get(key);
-		return getGroup(group).get(key);
+        Object object;
+		if(getGroup(group) == null) {
+			object = config.get(key);
+        } else {
+		    object = getGroup(group).get(key);
+        }
+
+        return object;
 	}
 	
 	public Integer getInt(String group, String key) {

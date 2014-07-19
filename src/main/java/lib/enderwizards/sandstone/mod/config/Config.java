@@ -19,7 +19,7 @@ public abstract class Config {
 		return null;
 	}	
 	
-	public abstract void require(String group, String key, Object fallback);
+	public abstract void require(String group, String key, ConfigReference defaultValue);
 		
 	public abstract Object get(String group, String key);
 	
