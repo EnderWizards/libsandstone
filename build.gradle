@@ -52,6 +52,17 @@ dependencies {
 	compile 'trainerguy22:jtoml:1.0.2'
 }
 
+
+jar {
+  from {
+    configurations.compile.findAll {
+      it.name.startsWith("jtoml")
+    }.collect {
+      it.directory ? it : zipTree(it)
+    }
+  }
+}
+
 processResources {
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
