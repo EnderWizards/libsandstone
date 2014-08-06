@@ -18,7 +18,7 @@ public class ConfigReference {
         this.defaultValue = defaultValue;
         minimum = Integer.MIN_VALUE;
         maximum = Integer.MAX_VALUE;
-        side = Side.CLIENT;
+        side = Side.SERVER;
     }
 
     public ConfigReference setType(ConfigGuiType type) {
