@@ -1,6 +1,7 @@
 package lib.enderwizards.sandstone.client.gui;
 
 import lib.enderwizards.sandstone.util.LanguageHelper;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
@@ -9,13 +10,16 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A helper class for GUIs. Handles String parsing and positioning, and easily drawing ItemStacks.
  * 
  * @author TheMike
  */
 public abstract class GuiBase extends GuiContainer {
-
+	
 	public GuiBase(Container container) {
 		super(container);
 	}
@@ -85,8 +89,5 @@ public abstract class GuiBase extends GuiContainer {
         itemRender.zLevel = 0.0F;
         GL11.glEnable(GL11.GL_LIGHTING);
     }
-
-	@Override
-	abstract protected void drawGuiContainerBackgroundLayer(float f, int i, int j);
 
 }

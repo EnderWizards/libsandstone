@@ -8,9 +8,6 @@ import net.minecraft.tileentity.TileEntity;
 
 /**
  * A small class for making tile entity code less repetitive. Takes care of client NBT loading.
- *
- * @author TheMike
- * @author x3n0ph0b3
  */
 public abstract class TileEntityBase extends TileEntity {
 
