@@ -33,6 +33,7 @@ public class ItemBase extends Item {
      * formatTooltip() directly and DO NOT call super.addInformation().
      */
     @Override
+    @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean whatDoesThisEvenDo) {
         this.formatTooltip(null, stack, list);
     }
@@ -48,6 +49,7 @@ public class ItemBase extends Item {
      * @param stack    The ItemStack passed from addInformation.
      * @param list     List of description lines passed from addInformation.
      */
+    @SideOnly(Side.CLIENT)
     public void formatTooltip(ImmutableMap<String, String> toFormat, ItemStack stack, List list) {
         String langTooltip = LanguageHelper.getLocalization(this.getUnlocalizedName(stack) + ".tooltip");
         if (langTooltip == null)
