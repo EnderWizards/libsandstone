@@ -1,6 +1,7 @@
 package lib.enderwizards.sandstone.init;
 
 import lib.enderwizards.sandstone.Sandstone;
+import lib.enderwizards.sandstone.blocks.ICustomItemBlock;
 import lib.enderwizards.sandstone.mod.ModRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -49,8 +50,8 @@ public class ContentHandler {
                 GameRegistry.registerItem(item, item.getUnlocalizedName().substring(5));
             } else if (obj instanceof Block) {
                 Block block = (Block) obj;
-                if (((ContentInit) objClass.getAnnotation(ContentInit.class)).itemBlock() != ContentInit.class) {
-                    GameRegistry.registerBlock(block, ((ContentInit) objClass.getAnnotation(ContentInit.class)).itemBlock(), block.getUnlocalizedName().substring(5));
+                if (obj instanceof ICustomItemBlock) {
+                    GameRegistry.registerBlock(block, ((ICustomItemBlock) obj).getCustomItemBlock(), block.getUnlocalizedName().substring(5));
                 } else
                     GameRegistry.registerBlock(block, block.getUnlocalizedName().substring(5));
             } else {
