@@ -71,6 +71,11 @@ public class BlockMultiple extends BlockBase {
     	}
     }
     
+	@Override
+	public int damageDropped(int meta) {
+		return meta;
+	}
+    
 	public int getLength() {
 		return blocks.length;
 	}
