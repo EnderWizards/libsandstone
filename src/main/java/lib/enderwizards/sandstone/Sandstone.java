@@ -14,6 +14,7 @@ import lib.enderwizards.sandstone.util.LanguageHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.LoaderState;
 import cpw.mods.fml.common.Mod;
@@ -76,13 +77,13 @@ public class Sandstone {
         try {
             ContentHandler.init(classLoader, smod.basePackage() + "." + smod.itemsLocation());
         } catch (Exception e) {
-            e.printStackTrace();
+			FMLCommonHandler.instance().raiseException(e, Loader.instance().activeModContainer().getModId() + " failed to initiate items.", true);
         }
 
         try {
             ContentHandler.init(classLoader, smod.basePackage() + "." + smod.blocksLocation());
         } catch (Exception e) {
-            e.printStackTrace();
+			FMLCommonHandler.instance().raiseException(e, Loader.instance().activeModContainer().getModId() + " failed to initiate blocks.", true);
         }
     }
 
