@@ -46,12 +46,12 @@ public class SubBlock {
     
     @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack stack) {
-        return LanguageHelper.getLocalization("item." + langName + ".name");
+        return LanguageHelper.getLocalization(getUnlocalizedName() + ".name");
     }
 	
     @SideOnly(Side.CLIENT)
     public String getUnlocalizedName() {
-    	return "tile." + langName + ".name";
+    	return "tile." + langName;
     }
     
 	@SideOnly(Side.CLIENT)

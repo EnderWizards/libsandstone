@@ -51,8 +51,9 @@ public class ItemBase extends Item {
      */
     @SideOnly(Side.CLIENT)
     public void formatTooltip(ImmutableMap<String, String> toFormat, ItemStack stack, List list) {
-        String langTooltip = LanguageHelper.getLocalization(this.getUnlocalizedName(stack) + ".tooltip");
-        if (langTooltip == null)
+       	String langName = this.getUnlocalizedNameInefficiently(stack) + ".tooltip";
+        String langTooltip = LanguageHelper.getLocalization(langName);
+        if (langTooltip == null || langTooltip == langName)
             return;
         if (toFormat != null) {
             Iterator<Entry<String, String>> entrySet = toFormat.entrySet().iterator();

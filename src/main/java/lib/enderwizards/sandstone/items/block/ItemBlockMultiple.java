@@ -18,6 +18,10 @@ public class ItemBlockMultiple extends ItemBlockBase {
 	public ItemBlockMultiple(Block block) {
 		super(block);
 		this.hasSubtypes = true;
+        SubBlock[] blocks = ((BlockMultiple) this.field_150939_a).blocks;
+		for(SubBlock subBlock : blocks) {
+			subBlock.setItemBlock(this);
+		}
 	}
 	
     @Override
@@ -34,7 +38,17 @@ public class ItemBlockMultiple extends ItemBlockBase {
     public String getItemStackDisplayName(ItemStack stack) {
         SubBlock[] blocks = ((BlockMultiple) this.field_150939_a).blocks;
         if(stack.getItemDamage() < blocks.length) {
-        	blocks[stack.getItemDamage()].getItemStackDisplayName(stack);
+        	return blocks[stack.getItemDamage()].getItemStackDisplayName(stack);
+        }
+        return "null";
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public String getUnlocalizedName(ItemStack stack) {
+        SubBlock[] blocks = ((BlockMultiple) this.field_150939_a).blocks;
+        if(stack.getItemDamage() < blocks.length) {
+        	return blocks[stack.getItemDamage()].getUnlocalizedName();
         }
         return "null";
     }

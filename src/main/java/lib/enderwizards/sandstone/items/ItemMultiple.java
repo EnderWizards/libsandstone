@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
+import lib.enderwizards.sandstone.blocks.BlockMultiple;
+import lib.enderwizards.sandstone.blocks.SubBlock;
 import lib.enderwizards.sandstone.mod.ModRegistry;
 import lib.enderwizards.sandstone.util.LanguageHelper;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -46,7 +48,7 @@ public class ItemMultiple extends ItemBase {
 		for(String name : names) {
 			items.add(new SubItem(name));
 		}
-		return (SubItem[]) items.toArray();
+		return items.toArray(new SubItem[items.size()]);
 	}
 	
 	private static SubItem[] buildSubItems(Object[] items) {
@@ -57,7 +59,7 @@ public class ItemMultiple extends ItemBase {
 			if(item instanceof SubItem)
 				newItems.add((SubItem) item);
 		}
-		return (SubItem[]) newItems.toArray();
+		return newItems.toArray(new SubItem[newItems.size()]);
 	}
 	
 	public int getLength() {
@@ -76,16 +78,25 @@ public class ItemMultiple extends ItemBase {
     @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack stack) {
         if(stack.getItemDamage() < items.length) {
-        	items[stack.getItemDamage()].getItemStackDisplayName(stack);
+        	return items[stack.getItemDamage()].getItemStackDisplayName(stack);
         }
         return "null";
     }
     
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(ItemStack stack, int pass) {
+    public String getUnlocalizedName(ItemStack stack) {
         if(stack.getItemDamage() < items.length) {
-        	return items[stack.getItemDamage()].getIcon(stack);
+        	return items[stack.getItemDamage()].getUnlocalizedName();
+        }
+        return "null";
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIconFromDamage(int meta) {
+        if(meta < items.length) {
+        	return items[meta].getIcon();
         }
         return null;
     }

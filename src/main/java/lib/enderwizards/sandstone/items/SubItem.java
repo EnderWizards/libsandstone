@@ -35,16 +35,16 @@ public class SubItem {
     
     @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack stack) {
-        return LanguageHelper.getLocalization("item." + langName + ".name");
+        return LanguageHelper.getLocalization(getUnlocalizedName() + ".name");
     }
     
     @SideOnly(Side.CLIENT)
     public String getUnlocalizedName() {
-    	return "item." + langName + ".name";
+    	return "item." + langName;
     }
     
 	@SideOnly(Side.CLIENT)
-    public IIcon getIcon(ItemStack stack) {
+    public IIcon getIcon() {
 		return itemIcon;
 	}
     

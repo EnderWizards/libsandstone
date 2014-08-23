@@ -11,9 +11,11 @@ import lib.enderwizards.sandstone.items.block.ItemBlockMultiple;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
 
 public class BlockMultiple extends BlockBase {
 	
@@ -40,7 +42,7 @@ public class BlockMultiple extends BlockBase {
 		for(String name : names) {
 			items.add(new SubBlock(name));
 		}
-		return (SubBlock[]) items.toArray();
+		return items.toArray(new SubBlock[items.size()]);
 	}
 	
 	private static SubBlock[] buildSubBlocks(Object[] items) {
@@ -51,7 +53,12 @@ public class BlockMultiple extends BlockBase {
 			if(item instanceof SubBlock)
 				newItems.add((SubBlock) item);
 		}
-		return (SubBlock[]) newItems.toArray();
+		return newItems.toArray(new SubBlock[newItems.size()]);
+	}
+	
+	@Override
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
+		world.setBlockMetadataWithNotify(x, y, z, stack.getItemDamage(), 3);
 	}
 	
     @Override
