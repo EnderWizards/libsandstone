@@ -58,21 +58,23 @@ public class InventoryHelper {
         return itemQuantity;
     }
 
-    public static boolean consumeItem(ItemStack stack, EntityPlayer player) {
-        return consumeItem(new Object[]{ stack }, player, 0, 1);
+    public static boolean consumeItem(Object item, EntityPlayer player) {
+        return consumeItem(new Object[]{ item }, player, 0, 1);
     }
 
-    public static boolean consumeItem(ItemStack stack, EntityPlayer player, int minCount) {
-        return consumeItem(new Object[]{ stack }, player, minCount, 1);
+    public static boolean consumeItem(Object item, EntityPlayer player, int minCount) {
+        return consumeItem(new Object[]{ item }, player, minCount, 1);
     }
 
-    public static boolean consumeItem(ItemStack stack, EntityPlayer player, int minCount, int amountDecreased) {
-        return consumeItem(new Object[]{ stack }, player, minCount, amountDecreased);
+    public static boolean consumeItem(Object item, EntityPlayer player, int minCount, int amountDecreased) {
+        return consumeItem(new Object[]{ item }, player, minCount, amountDecreased);
     }
 
-    public static boolean consumeItem(Object[] stackList, EntityPlayer player, int minCount, int amountDecreased) {
+    public static boolean consumeItem(Object[] itemList, EntityPlayer player, int minCount, int amountDecreased) {
         if(player.capabilities.isCreativeMode)
             return true;
+        if(itemList.length == 0 || !(itemList[0] instanceof ItemStack || itemList[0] instanceof Item || itemList[0] instanceof Block))
+            return false;
         List<Integer> suggestedSlots = new ArrayList<Integer>();
         int itemCount = 0;
         for (int slot = 0; slot < player.inventory.mainInventory.length; slot++) {
@@ -81,7 +83,7 @@ public class InventoryHelper {
             }
 
             ItemStack slotStack = player.inventory.mainInventory[slot];
-            for(Object stack : stackList) {
+            for(Object stack : itemList) {
                 if ((stack instanceof ItemStack && slotStack.isItemEqual((ItemStack) stack)) ||
                    (stack instanceof Block && ContentHelper.areItemsEqual(Item.getItemFromBlock((Block) stack), slotStack.getItem()) ||
                    (stack instanceof Item && ContentHelper.areItemsEqual((Item) stack, slotStack.getItem())))) {

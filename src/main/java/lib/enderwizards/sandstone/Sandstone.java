@@ -5,12 +5,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import lib.enderwizards.sandstone.init.ContentHandler;
 import lib.enderwizards.sandstone.mod.ModIntegration;
 import lib.enderwizards.sandstone.mod.ModRegistry;
 import lib.enderwizards.sandstone.mod.SandstoneMod;
+import lib.enderwizards.sandstone.server.CommandDebug;
 import lib.enderwizards.sandstone.util.LanguageHelper;
 
+import net.minecraft.command.CommandHandler;
+import net.minecraft.launchwrapper.Launch;
+import net.minecraft.server.MinecraftServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -55,6 +60,15 @@ public class Sandstone {
         LanguageHelper.globals.put("colors.light_purple", "\u00A7d");
         LanguageHelper.globals.put("colors.yellow", "\u00A7e");
         LanguageHelper.globals.put("colors.white", "\u00A7f");
+    }
+
+    @EventHandler
+    public void serverStarted(FMLServerStartedEvent event) {
+        CommandHandler handler = (CommandHandler) MinecraftServer.getServer().getCommandManager();
+
+        if ((Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")) {
+            handler.registerCommand(new CommandDebug());
+        }
     }
 
     /**
