@@ -96,11 +96,9 @@ public class InventoryHelper {
                 int stackSize = player.inventory.getStackInSlot(slot).stackSize;
                 if(stackSize >= count) {
                     player.inventory.decrStackSize(slot, count);
-                    System.out.println("Hello?");
                     return true;
                 } else {
                     player.inventory.decrStackSize(slot, stackSize);
-                    System.out.println("Hello? #2");
                     count -= stackSize;
                 }
             }
