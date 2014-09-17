@@ -27,6 +27,8 @@ You should now find a build of libsandstone in build/libs.
 
 If you want a feature implemented, or found a bug, talk to us about it! We're very open with pull requests, but be warned that we legally take ownership of any code contributed to this repository.
 
+Since IntelliJ/Eclipse is not aware of libsandstone's Gradle dependencies, you'll need to download and link the latest version of jTOML (found [here](https://github.com/TrainerGuy22/builds/tree/gh-pages/maven/trainerguy22/jtoml)) within your IDE project.
+
 If you've found a bug, please report it on the Github issue tracker. It helps a lot. Another thing you can do is use [OpenEye](http://openeye.openmods.info/). That'll tell us about any crashes you have with libsandstone, without you needing to report it.
 
 Also, if your going to implement a large feature, or just want to talk to us, you can reach us on IRC at **#reliquary** on **EsperNet**.
