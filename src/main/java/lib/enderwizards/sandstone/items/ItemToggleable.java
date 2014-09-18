@@ -39,7 +39,6 @@ public class ItemToggleable extends ItemBase {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs tabs, List list) {
         list.add(this.newItemStack());
     }
