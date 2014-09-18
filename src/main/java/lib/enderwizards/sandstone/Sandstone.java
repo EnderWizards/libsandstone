@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import lib.enderwizards.sandstone.init.ContentHandler;
 import lib.enderwizards.sandstone.mod.ModIntegration;
@@ -19,10 +20,6 @@ import net.minecraft.server.MinecraftServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.LoaderState;
-import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -78,7 +75,7 @@ public class Sandstone {
         if (!Loader.instance().isInState(LoaderState.PREINITIALIZATION))
             return;
 
-        Mod mod = Loader.instance().activeModContainer().getMod().getClass().getAnnotation(Mod.class);
+        ModContainer mod = Loader.instance().activeModContainer();
         SandstoneMod smod = Loader.instance().activeModContainer().getMod().getClass().getAnnotation(SandstoneMod.class);
         if (smod.basePackage().equals("")) {
             LOGGER.error("SandstoneMod " + Loader.instance().activeModContainer().getModId() + "didn't have a basePackage! Ignoring!");
@@ -106,8 +103,8 @@ public class Sandstone {
             return;
         String modId = Loader.instance().activeModContainer().getModId();
         if (modIntegrations.containsKey(modId)) {
-        	for (ModIntegration mod : (List<ModIntegration>) modIntegrations.get(modId)) {
-        		mod.onLoad(Loader.instance().isModLoaded(mod.modId));
+        	for (ModIntegration mod : modIntegrations.get(modId)) {
+        		mod.onLoad(Loader.isModLoaded(mod.modId));
         	}
         }
     }
@@ -119,7 +116,7 @@ public class Sandstone {
     	if (!modIntegrations.containsKey(modId)) {
     		modIntegrations.put(modId, new ArrayList<ModIntegration>());
     	}
-    	return ((List<ModIntegration>) modIntegrations.get(modId)).add(modIntegration);
+    	return modIntegrations.get(modId).add(modIntegration);
     }
     
 }

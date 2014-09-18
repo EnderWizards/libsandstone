@@ -3,8 +3,8 @@ package lib.enderwizards.sandstone.mod;
 import java.util.ArrayList;
 import java.util.List;
 
+import cpw.mods.fml.common.ModContainer;
 import lib.enderwizards.sandstone.util.misc.Duo;
-import cpw.mods.fml.common.Mod;
 
 /**
  * A simple registry for holding information about mods registered with Sandstone.
@@ -13,7 +13,7 @@ import cpw.mods.fml.common.Mod;
  */
 public class ModRegistry {
 
-    public static List<Duo<Mod, SandstoneMod>> mods = new ArrayList<Duo<Mod, SandstoneMod>>();
+    public static List<Duo<ModContainer, SandstoneMod>> mods = new ArrayList<Duo<ModContainer, SandstoneMod>>();
 
     /**
      * Puts the passed in Mod/SandstoneMod into the list, as a Duo. This method only abstract the Duo class, and has the same effect as directly accessing the mods field.
@@ -21,8 +21,8 @@ public class ModRegistry {
      * @param mod  A Mod annotation, belonging to the mod being registered.
      * @param smod A SandstoneMod annotation, belonging to the mod being registered.
      */
-    public static void put(Mod mod, SandstoneMod smod) {
-        mods.add(new Duo<Mod, SandstoneMod>(mod, smod));
+    public static void put(ModContainer mod, SandstoneMod smod) {
+        mods.add(new Duo<ModContainer, SandstoneMod>(mod, smod));
     }
 
     /**
@@ -32,11 +32,19 @@ public class ModRegistry {
      * @return The mod ID that was resolved. If no mod ID was found, it will simply return "" so you can act accordingly.
      */
     public static String getID(String className) {
-        for (Duo<Mod, SandstoneMod> mod : mods) {
+        for (Duo<ModContainer, SandstoneMod> mod : mods) {
             if (className.indexOf(mod.two.basePackage()) == 0)
-                return mod.one.modid();
+                return mod.one.getModId();
         }
         return "";
+    }
+
+    public static boolean hasMod(ModContainer mod) {
+        for (Duo<ModContainer, SandstoneMod> currentMod : mods) {
+            if(mod.getModId().equals(currentMod.one.getModId()))
+                return true;
+        }
+        return false;
     }
 
 }
