@@ -1,8 +1,12 @@
 package lib.enderwizards.sandstone.util;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.ImmutableMap;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -55,6 +59,24 @@ public class LanguageHelper {
             localization = StatCollector.translateToFallback(key);
         }
         return localization;
+    }
+
+    public static void formatTooltip(String langName, ImmutableMap<String, String> toFormat, ItemStack stack, List list) {
+        String langTooltip = LanguageHelper.getLocalization(langName);
+        if (langTooltip == null || langTooltip.equals(langName))
+            return;
+        if (toFormat != null) {
+            Iterator<Map.Entry<String, String>> entrySet = toFormat.entrySet().iterator();
+            while (entrySet.hasNext()) {
+                Map.Entry<String, String> toReplace = entrySet.next();
+                langTooltip = langTooltip.replace("{{" + toReplace.getKey() + "}}", toReplace.getValue());
+            }
+        }
+
+        for (String descriptionLine : langTooltip.split(";")) {
+            if (descriptionLine != null && descriptionLine.length() > 0)
+                list.add(descriptionLine);
+        }
     }
 
 }

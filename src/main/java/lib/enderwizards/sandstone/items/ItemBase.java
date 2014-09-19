@@ -1,8 +1,6 @@
 package lib.enderwizards.sandstone.items;
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
 
 import lib.enderwizards.sandstone.mod.ModRegistry;
 import lib.enderwizards.sandstone.util.LanguageHelper;
@@ -51,22 +49,7 @@ public class ItemBase extends Item {
      */
     @SideOnly(Side.CLIENT)
     public void formatTooltip(ImmutableMap<String, String> toFormat, ItemStack stack, List list) {
-       	String langName = this.getUnlocalizedNameInefficiently(stack) + ".tooltip";
-        String langTooltip = LanguageHelper.getLocalization(langName);
-        if (langTooltip == null || langTooltip == langName)
-            return;
-        if (toFormat != null) {
-            Iterator<Entry<String, String>> entrySet = toFormat.entrySet().iterator();
-            while (entrySet.hasNext()) {
-                Entry<String, String> toReplace = entrySet.next();
-                langTooltip = langTooltip.replace("{{" + toReplace.getKey() + "}}", toReplace.getValue());
-            }
-        }
-
-        for (String descriptionLine : langTooltip.split(";")) {
-            if (descriptionLine != null && descriptionLine.length() > 0)
-                list.add(descriptionLine);
-        }
+       	LanguageHelper.formatTooltip(this.getUnlocalizedNameInefficiently(stack) + ".tooltip", toFormat, stack, list);
     }
 
     @Override

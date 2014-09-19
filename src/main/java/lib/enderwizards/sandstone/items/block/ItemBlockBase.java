@@ -53,22 +53,7 @@ public class ItemBlockBase extends ItemBlock {
      *            List of description lines passed from addInformation.
      */
     public void formatTooltip(ImmutableMap<String, String> toFormat, ItemStack stack, List list) {
-    	String langName = this.getUnlocalizedNameInefficiently(stack) + ".tooltip";
-        String langTooltip = LanguageHelper.getLocalization(langName);
-        if (langTooltip == null || langTooltip == langName)
-            return;
-        if (toFormat != null) {
-            Iterator<Map.Entry<String, String>> entrySet = toFormat.entrySet().iterator();
-            while (entrySet.hasNext()) {
-                Map.Entry<String, String> toReplace = entrySet.next();
-                langTooltip = langTooltip.replace("{{" + toReplace.getKey() + "}}", toReplace.getValue());
-            }
-        }
-
-        for (String descriptionLine : langTooltip.split(";")) {
-            if (descriptionLine != null && descriptionLine.length() > 0)
-                list.add(descriptionLine);
-        }
+        LanguageHelper.formatTooltip(this.getUnlocalizedNameInefficiently(stack) + ".tooltip", toFormat, stack, list);
     }
    
 
