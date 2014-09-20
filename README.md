@@ -36,3 +36,5 @@ Also, if your going to implement a large feature, or just want to talk to us, yo
 ## License
 
 libsandstone is under the **LGPLv3 license**, found in the LICENSE file included within the repo.
+
+Any code under org.github.trainerguy22.jtoml is licensed under the **MIT license**. This license is GPL-compatible.

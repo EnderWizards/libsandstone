@@ -30,13 +30,6 @@ buildscript {
     }
 }
 
-repositories {
-  maven {
-    name = "trainerguy22"
-    url = "http://trainerguy22.github.io/builds/maven/"
-  }
-}
-
 // We apply the 'forge' plugin, so ForgeGradle can do it's stuff.
 apply plugin: 'forge'
 
@@ -46,21 +39,6 @@ archivesBaseName = 'LibSandstone'
 
 minecraft {
 	version = "1.7.10-10.13.0.1180"
-}
-
-dependencies {
-	compile 'trainerguy22:jtoml:1.0.2'
-}
-
-
-jar {
-  from {
-    configurations.compile.findAll {
-      it.name.startsWith("jtoml")
-    }.collect {
-      it.directory ? it : zipTree(it)
-    }
-  }
 }
 
 processResources {
