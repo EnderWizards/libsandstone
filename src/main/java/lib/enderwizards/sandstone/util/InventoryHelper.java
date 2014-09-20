@@ -36,7 +36,7 @@ public class InventoryHelper {
                 itemQuantity = getItemQuantity(stack, inventory);
                 targetItem = stack.copy();
 
-                if(disposeOfItem) {
+                if (disposeOfItem) {
                     inventory.decrStackSize(slot, 1);
                 }
             }
@@ -59,21 +59,21 @@ public class InventoryHelper {
     }
 
     public static boolean consumeItem(Object item, EntityPlayer player) {
-        return consumeItem(new Object[]{ item }, player, 0, 1);
+        return consumeItem(new Object[]{item}, player, 0, 1);
     }
 
     public static boolean consumeItem(Object item, EntityPlayer player, int minCount) {
-        return consumeItem(new Object[]{ item }, player, minCount, 1);
+        return consumeItem(new Object[]{item}, player, minCount, 1);
     }
 
     public static boolean consumeItem(Object item, EntityPlayer player, int minCount, int amountDecreased) {
-        return consumeItem(new Object[]{ item }, player, minCount, amountDecreased);
+        return consumeItem(new Object[]{item}, player, minCount, amountDecreased);
     }
 
     public static boolean consumeItem(Object[] itemList, EntityPlayer player, int minCount, int amountDecreased) {
-        if(player.capabilities.isCreativeMode)
+        if (player.capabilities.isCreativeMode)
             return true;
-        if(itemList.length == 0 || !(itemList[0] instanceof ItemStack || itemList[0] instanceof Item || itemList[0] instanceof Block))
+        if (itemList.length == 0 || !(itemList[0] instanceof ItemStack || itemList[0] instanceof Item || itemList[0] instanceof Block))
             return false;
         List<Integer> suggestedSlots = new ArrayList<Integer>();
         int itemCount = 0;
@@ -83,20 +83,20 @@ public class InventoryHelper {
             }
 
             ItemStack slotStack = player.inventory.mainInventory[slot];
-            for(Object stack : itemList) {
+            for (Object stack : itemList) {
                 if ((stack instanceof ItemStack && slotStack.isItemEqual((ItemStack) stack)) ||
-                   (stack instanceof Block && ContentHelper.areItemsEqual(Item.getItemFromBlock((Block) stack), slotStack.getItem()) ||
-                   (stack instanceof Item && ContentHelper.areItemsEqual((Item) stack, slotStack.getItem())))) {
+                        (stack instanceof Block && ContentHelper.areItemsEqual(Item.getItemFromBlock((Block) stack), slotStack.getItem()) ||
+                                (stack instanceof Item && ContentHelper.areItemsEqual((Item) stack, slotStack.getItem())))) {
                     itemCount += player.inventory.mainInventory[slot].stackSize;
                     suggestedSlots.add(slot);
                 }
             }
         }
         int count = amountDecreased;
-        if(suggestedSlots.size() > 0 && itemCount >= minCount + amountDecreased) {
-            for(int slot : suggestedSlots) {
+        if (suggestedSlots.size() > 0 && itemCount >= minCount + amountDecreased) {
+            for (int slot : suggestedSlots) {
                 int stackSize = player.inventory.getStackInSlot(slot).stackSize;
-                if(stackSize >= count) {
+                if (stackSize >= count) {
                     player.inventory.decrStackSize(slot, count);
                     return true;
                 } else {

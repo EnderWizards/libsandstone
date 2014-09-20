@@ -1,7 +1,8 @@
 package lib.enderwizards.sandstone.items;
 
-import java.util.List;
-
+import com.google.common.collect.ImmutableMap;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import lib.enderwizards.sandstone.mod.ModRegistry;
 import lib.enderwizards.sandstone.util.LanguageHelper;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -9,10 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import com.google.common.collect.ImmutableMap;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.util.List;
 
 /**
  * ItemBase, a helper class for items. Handles language names, language
@@ -49,7 +47,7 @@ public class ItemBase extends Item {
      */
     @SideOnly(Side.CLIENT)
     public void formatTooltip(ImmutableMap<String, String> toFormat, ItemStack stack, List list) {
-       	LanguageHelper.formatTooltip(this.getUnlocalizedNameInefficiently(stack) + ".tooltip", toFormat, stack, list);
+        LanguageHelper.formatTooltip(this.getUnlocalizedNameInefficiently(stack) + ".tooltip", toFormat, stack, list);
     }
 
     @Override

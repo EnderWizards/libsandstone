@@ -1,19 +1,13 @@
 package lib.enderwizards.sandstone.init.recipes;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import cpw.mods.fml.common.registry.GameRegistry;
 import lib.enderwizards.sandstone.Sandstone;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
 import org.apache.commons.lang3.ArrayUtils;
 
-import cpw.mods.fml.common.registry.GameRegistry;
+import java.util.*;
 
 /**
  * A builder for crafting table recipes. Why use it? Because it makes your code look very, very clean. And awesome. :D
@@ -31,7 +25,7 @@ public abstract class CraftingRecipeBuilder {
         private List<ItemStack> input = new ArrayList<ItemStack>();
 
         public ShapelessCraftingRecipeBuilder output(ItemStack stack) {
-            if(output != null)
+            if (output != null)
                 Sandstone.LOGGER.warn("ShapelessCraftingRecipeBuilder: It's bad practice to replace a preexisting output()! Replacing.");
             output = stack;
             return this;
@@ -58,7 +52,7 @@ public abstract class CraftingRecipeBuilder {
             return this.input(new ItemStack(block));
         }
 
-            @Override
+        @Override
         public void build() {
             GameRegistry.addShapelessRecipe(output, input.toArray());
         }
@@ -71,7 +65,7 @@ public abstract class CraftingRecipeBuilder {
         private Map<Character, Object> replacements = new HashMap<Character, Object>();
 
         public ShapedCraftingRecipeBuilder output(ItemStack stack) {
-            if(output != null)
+            if (output != null)
                 Sandstone.LOGGER.warn("ShapedCraftingRecipeBuilder: It's bad practice to replace a preexisting output()! Replacing.");
             output = stack;
             return this;
@@ -86,14 +80,14 @@ public abstract class CraftingRecipeBuilder {
         }
 
         public ShapedCraftingRecipeBuilder input(String... input) {
-            if(input.length > 3)
+            if (input.length > 3)
                 Sandstone.LOGGER.warn("ShapedCraftingRecipeBuilder: Input array larger than 3! Truncating array.");
             this.input = ArrayUtils.subarray(input, 0, 3);
             return this;
         }
 
         private void where(char key, Object object) {
-            if(replacements.containsKey(key)) {
+            if (replacements.containsKey(key)) {
                 Sandstone.LOGGER.warn("ShapedCraftingRecipeBuilder: It's bad practice to have two where()s with the same key! Replacing.");
                 replacements.remove(key);
             }
@@ -119,7 +113,7 @@ public abstract class CraftingRecipeBuilder {
         public void build() {
             List<Object> object = new ArrayList<Object>();
             Collections.addAll(object, input);
-            for(Map.Entry<Character, Object> replacement : replacements.entrySet()) {
+            for (Map.Entry<Character, Object> replacement : replacements.entrySet()) {
                 object.add(replacement.getKey());
                 object.add(replacement.getValue());
             }

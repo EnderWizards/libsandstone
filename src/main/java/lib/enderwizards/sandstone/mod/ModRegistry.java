@@ -1,10 +1,10 @@
 package lib.enderwizards.sandstone.mod;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cpw.mods.fml.common.ModContainer;
 import lib.enderwizards.sandstone.util.misc.Duo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple registry for holding information about mods registered with Sandstone.
@@ -41,7 +41,7 @@ public class ModRegistry {
 
     public static boolean hasMod(ModContainer mod) {
         for (Duo<ModContainer, SandstoneMod> currentMod : mods) {
-            if(mod.getModId().equals(currentMod.one.getModId()))
+            if (mod.getModId().equals(currentMod.one.getModId()))
                 return true;
         }
         return false;

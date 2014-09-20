@@ -50,7 +50,7 @@ public class ItemToggleable extends ItemBase {
     }
 
     public boolean isEnabled(ItemStack stack) {
-        if(stack == null || stack.getTagCompound() == null)
+        if (stack == null || stack.getTagCompound() == null)
             return false;
         return stack.getTagCompound().hasKey("enabled");
     }
