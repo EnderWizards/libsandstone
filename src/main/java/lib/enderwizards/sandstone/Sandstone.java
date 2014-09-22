@@ -15,6 +15,7 @@ import lib.enderwizards.sandstone.util.LanguageHelper;
 import net.minecraft.command.CommandHandler;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.EnumChatFormatting;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -55,6 +56,7 @@ public class Sandstone {
         LanguageHelper.globals.put("colors.light_purple", "\u00A7d");
         LanguageHelper.globals.put("colors.yellow", "\u00A7e");
         LanguageHelper.globals.put("colors.white", "\u00A7f");
+        LanguageHelper.globals.put("colors.reset", EnumChatFormatting.RESET.toString());
     }
 
     @EventHandler

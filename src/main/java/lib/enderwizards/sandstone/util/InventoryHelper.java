@@ -11,6 +11,29 @@ import java.util.List;
 
 public class InventoryHelper {
 
+    public static void removeItem(ItemStack stack, IInventory inventory, int quantity) {
+        InventoryHelper.removeItem(stack, inventory, quantity, -1);
+    }
+
+    public static void removeItem(ItemStack stack, EntityPlayer player, int quantity) {
+        InventoryHelper.removeItem(stack, player.inventory, quantity, player.inventory.mainInventory.length);
+    }
+
+    public static void removeItem(ItemStack stack, IInventory inventory, int quantity, int limit) {
+        for (int slot = 0; slot < Math.min(inventory.getSizeInventory(), (limit > 0 ? limit : inventory.getSizeInventory())); slot++) {
+            ItemStack ist = inventory.getStackInSlot(slot);
+            if (ist == null) {
+                continue;
+            }
+            if (inventory.getStackInSlot(slot).isItemEqual(stack)) {
+                while (quantity > 0 && inventory.getStackInSlot(slot) != null) {
+                    inventory.decrStackSize(slot, 1);
+                    quantity--;
+                }
+            }
+        }
+    }
+
     public static ItemStack getTargetItem(ItemStack self, IInventory inventory) {
         return getTargetItem(self, inventory, true);
     }
@@ -45,8 +68,16 @@ public class InventoryHelper {
     }
 
     public static int getItemQuantity(ItemStack stack, IInventory inventory) {
+        return InventoryHelper.getItemQuantity(stack, inventory, 0);
+    }
+
+    public static int getItemQuantity(ItemStack stack, EntityPlayer player) {
+        return InventoryHelper.getItemQuantity(stack, player.inventory, player.inventory.mainInventory.length);
+    }
+
+    public static int getItemQuantity(ItemStack stack, IInventory inventory, int limit) {
         int itemQuantity = 0;
-        for (int slot = 0; slot < inventory.getSizeInventory(); slot++) {
+        for (int slot = 0; slot < Math.min(inventory.getSizeInventory(), (limit > 0 ? limit : inventory.getSizeInventory())); slot++) {
             ItemStack newStack = inventory.getStackInSlot(slot);
             if (newStack == null) {
                 continue;
