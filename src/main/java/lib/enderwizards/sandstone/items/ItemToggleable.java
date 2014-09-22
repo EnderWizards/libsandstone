@@ -27,6 +27,9 @@ public class ItemToggleable extends ItemBase {
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         if (player.isSneaking()) {
+            if (!stack.hasTagCompound()) {
+                stack.setTagCompound(new NBTTagCompound());
+            }
             if (stack.getTagCompound().hasKey("enabled")) {
                 stack.getTagCompound().removeTag("enabled");
             } else {

@@ -225,7 +225,6 @@ public class SimpleTomlParser implements TomlParser {
                             "Found all the following types in the same array declaration: " + types);
                 }
             }
-            //System.out.println("------> " + key + "=" + values);
             return new Object[]{key, values};
         }
         return null;
