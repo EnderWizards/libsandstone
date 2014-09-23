@@ -32,6 +32,7 @@ public class InventoryHelper {
                 }
             }
         }
+        inventory.markDirty();
     }
 
     public static ItemStack getTargetItem(ItemStack self, IInventory inventory) {
@@ -64,6 +65,7 @@ public class InventoryHelper {
                 }
             }
         }
+        inventory.markDirty();
         return targetItem;
     }
 
