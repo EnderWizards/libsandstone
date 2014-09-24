@@ -8,6 +8,9 @@ import lib.enderwizards.sandstone.mod.ModRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * ContentHandler takes care of initializing all of your blocks/items for you.
  * <p/>
@@ -26,6 +29,12 @@ public class ContentHandler {
      * @param packageName The full package name to search within. It doesn't recursively search in child packages.
      * @throws Exception
      */
+
+    //String list that contains all the unlocalized names being added by the initialization routine
+    //this allows the content handler to hold a static list of objects registered, which I can then use
+    //to automate the recipe disabling process. Experimental. Sorry for mucking around in your library, Mike. XD
+    public static List<String> registeredObjectNames = new ArrayList<String>();
+
     public static void init(ClassLoader classLoader, String packageName) throws Exception {
         // Gets the classpath, and searches it for all classes in packageName.
         ClassPath classPath = ClassPath.from(classLoader);
@@ -46,12 +55,18 @@ public class ContentHandler {
             if (obj instanceof Item) {
                 Item item = (Item) obj;
                 GameRegistry.registerItem(item, item.getUnlocalizedName().substring(5));
+                if (!registeredObjectNames.contains(item.getUnlocalizedName().substring(5)))
+                    registeredObjectNames.add(item.getUnlocalizedName().substring(5));
             } else if (obj instanceof Block) {
                 Block block = (Block) obj;
                 if (obj instanceof ICustomItemBlock) {
                     GameRegistry.registerBlock(block, ((ICustomItemBlock) obj).getCustomItemBlock(), block.getUnlocalizedName().substring(5));
+                if (!registeredObjectNames.contains(block.getUnlocalizedName().substring(5)))
+                    registeredObjectNames.add(block.getUnlocalizedName().substring(5));
                 } else
                     GameRegistry.registerBlock(block, block.getUnlocalizedName().substring(5));
+                if (!registeredObjectNames.contains(block.getUnlocalizedName().substring(5)))
+                    registeredObjectNames.add(block.getUnlocalizedName().substring(5));
             } else {
                 Sandstone.LOGGER.warn("Class '" + objClass.getName() + "' is not a Block or an Item! You shouldn't be calling @ContentInit on this! Ignoring!");
             }
