@@ -27,14 +27,7 @@ public class ItemToggleable extends ItemBase {
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         if (player.isSneaking()) {
-            if (!stack.hasTagCompound()) {
-                stack.setTagCompound(new NBTTagCompound());
-            }
-            if (stack.getTagCompound().hasKey("enabled")) {
-                stack.getTagCompound().removeTag("enabled");
-            } else {
-                stack.getTagCompound().setBoolean("enabled", true);
-            }
+            toggleEnabled(stack);
             player.worldObj.playSoundAtEntity(player, "random.orb", 0.1F, 0.5F * ((player.worldObj.rand.nextFloat() - player.worldObj.rand.nextFloat()) * 0.7F + 1.2F));
             return stack;
         }
@@ -56,6 +49,17 @@ public class ItemToggleable extends ItemBase {
         if (stack == null || stack.getTagCompound() == null)
             return false;
         return stack.getTagCompound().hasKey("enabled");
+    }
+
+    public void toggleEnabled(ItemStack stack) {
+        if (!stack.hasTagCompound()) {
+            stack.setTagCompound(new NBTTagCompound());
+        }
+        if (stack.getTagCompound().hasKey("enabled")) {
+            stack.getTagCompound().removeTag("enabled");
+        } else {
+            stack.getTagCompound().setBoolean("enabled", true);
+        }
     }
 
 }
