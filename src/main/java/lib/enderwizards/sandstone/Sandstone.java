@@ -96,6 +96,11 @@ public class Sandstone {
         } catch (Exception e) {
             FMLCommonHandler.instance().raiseException(e, Loader.instance().activeModContainer().getModId() + " failed to initiate blocks.", true);
         }
+
+        //sort the object list when we're done.
+        List<String> sortedObjectNames = ContentHandler.registeredObjectNames.subList(0, ContentHandler.registeredObjectNames.size());
+        java.util.Collections.sort(sortedObjectNames);
+        ContentHandler.registeredObjectNames = sortedObjectNames;
     }
 
     public static void postInit() {
