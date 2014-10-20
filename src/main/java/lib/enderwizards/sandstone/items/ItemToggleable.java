@@ -2,6 +2,7 @@ package lib.enderwizards.sandstone.items;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import lib.enderwizards.sandstone.util.NBTHelper;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -34,32 +35,24 @@ public class ItemToggleable extends ItemBase {
         return stack;
     }
 
-    @Override
-    public void getSubItems(Item item, CreativeTabs tabs, List list) {
-        list.add(this.newItemStack());
+//    @Override
+//    public void getSubItems(Item item, CreativeTabs tabs, List list) {
+//        list.add(this.newItemStack());
+//    }
+
+//    this method is evil and does silly things it shouldn't.
+//    public ItemStack newItemStack() {
+//        ItemStack stack = new ItemStack(this, 1);
+//        stack.setTagCompound(new NBTTagCompound());
+//        return stack;
+//    }
+
+    public boolean isEnabled(ItemStack ist) {
+        return NBTHelper.getBoolean("enabled", ist);
     }
 
-    public ItemStack newItemStack() {
-        ItemStack stack = new ItemStack(this, 1);
-        stack.setTagCompound(new NBTTagCompound());
-        return stack;
-    }
-
-    public boolean isEnabled(ItemStack stack) {
-        if (stack == null || stack.getTagCompound() == null)
-            return false;
-        return stack.getTagCompound().hasKey("enabled");
-    }
-
-    public void toggleEnabled(ItemStack stack) {
-        if (!stack.hasTagCompound()) {
-            stack.setTagCompound(new NBTTagCompound());
-        }
-        if (stack.getTagCompound().hasKey("enabled")) {
-            stack.getTagCompound().removeTag("enabled");
-        } else {
-            stack.getTagCompound().setBoolean("enabled", true);
-        }
+    public void toggleEnabled(ItemStack ist) {
+        NBTHelper.setBoolean("enabled", ist, !NBTHelper.getBoolean("enabled", ist));
     }
 
 }
