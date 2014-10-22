@@ -54,12 +54,12 @@ public class ItemData extends WorldSaveFile {
     }
 
     public void setTag(UUID itemUUID, NBTTagCompound nbt) {
-        removeTag(itemUUID);
+        resetTag(itemUUID);
         itemMap.add(new Duo<UUID, NBTTagCompound>(itemUUID, nbt));
         this.setModified();
     }
 
-    public void removeTag(UUID itemUUID) {
+    public void resetTag(UUID itemUUID) {
         List<Duo<UUID, NBTTagCompound>> listSlatedForRemoval = new ArrayList<Duo<UUID, NBTTagCompound>>();
         for (Duo<UUID, NBTTagCompound> itemTag : itemMap) {
             if (itemTag.one.equals(itemUUID)) {

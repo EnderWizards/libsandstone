@@ -27,7 +27,7 @@ public class ItemToggleable extends ItemBase {
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        if (player.isSneaking()) {
+        if (!world.isRemote && player.isSneaking()) {
             toggleEnabled(stack);
             player.worldObj.playSoundAtEntity(player, "random.orb", 0.1F, 0.5F * ((player.worldObj.rand.nextFloat() - player.worldObj.rand.nextFloat()) * 0.7F + 1.2F));
             return stack;
