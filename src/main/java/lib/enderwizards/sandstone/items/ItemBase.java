@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
@@ -20,6 +21,8 @@ import java.util.List;
  */
 public class ItemBase extends Item {
 
+    //defaults to only showing the tooltip when shift is pressed. you can override this behavior at the item level by setting the item's showTooltipsAlways bool to true.
+    private boolean showTooltipsAlways = false;
     public ItemBase(String langName) {
         this.setUnlocalizedName(langName);
     }
@@ -47,7 +50,8 @@ public class ItemBase extends Item {
      */
     @SideOnly(Side.CLIENT)
     public void formatTooltip(ImmutableMap<String, String> toFormat, ItemStack stack, List list) {
-        LanguageHelper.formatTooltip(this.getUnlocalizedNameInefficiently(stack) + ".tooltip", toFormat, stack, list);
+        if (showTooltipsAlways() || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))
+            LanguageHelper.formatTooltip(this.getUnlocalizedNameInefficiently(stack) + ".tooltip", toFormat, stack, list);
     }
 
     @Override
@@ -62,4 +66,11 @@ public class ItemBase extends Item {
         itemIcon = iconRegister.registerIcon(ModRegistry.getID(this.getClass().getCanonicalName()) + ":" + this.getUnlocalizedName().substring(5));
     }
 
+    protected boolean showTooltipsAlways() {
+        return this.showTooltipsAlways;
+    }
+
+    protected void showTooltipsAlways(boolean b) {
+        this.showTooltipsAlways = b;
+    }
 }

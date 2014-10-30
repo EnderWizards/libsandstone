@@ -8,6 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
@@ -21,6 +22,8 @@ import java.util.List;
  */
 public class ItemBlockBase extends ItemBlock {
 
+    //defaults to only showing the tooltip when shift is pressed. you can override this behavior at the item level by setting the item's showTooltipsAlways bool to true.
+    private boolean showTooltipsAlways = false;
     public ItemBlockBase(Block block) {
         super(block);
     }
@@ -46,7 +49,8 @@ public class ItemBlockBase extends ItemBlock {
      * @param list     List of description lines passed from addInformation.
      */
     public void formatTooltip(ImmutableMap<String, String> toFormat, ItemStack stack, List list) {
-        LanguageHelper.formatTooltip(this.getUnlocalizedNameInefficiently(stack) + ".tooltip", toFormat, stack, list);
+        if (showTooltipsAlways() || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))
+            LanguageHelper.formatTooltip(this.getUnlocalizedNameInefficiently(stack) + ".tooltip", toFormat, stack, list);
     }
 
 
@@ -56,4 +60,11 @@ public class ItemBlockBase extends ItemBlock {
         return LanguageHelper.getLocalization(this.getUnlocalizedNameInefficiently(stack) + ".name");
     }
 
+    protected boolean showTooltipsAlways() {
+        return this.showTooltipsAlways;
+    }
+
+    protected void showTooltipsAlways(boolean b) {
+        this.showTooltipsAlways = b;
+    }
 }
