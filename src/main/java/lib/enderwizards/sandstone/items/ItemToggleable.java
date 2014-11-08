@@ -35,18 +35,6 @@ public class ItemToggleable extends ItemBase {
         return stack;
     }
 
-//    @Override
-//    public void getSubItems(Item item, CreativeTabs tabs, List list) {
-//        list.add(this.newItemStack());
-//    }
-
-//    this method is evil and does silly things it shouldn't.
-//    public ItemStack newItemStack() {
-//        ItemStack stack = new ItemStack(this, 1);
-//        stack.setTagCompound(new NBTTagCompound());
-//        return stack;
-//    }
-
     public boolean isEnabled(ItemStack ist) {
         return NBTHelper.getBoolean("enabled", ist);
     }
