@@ -2,7 +2,7 @@ package lib.enderwizards.sandstone.server;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
-import lib.enderwizards.sandstone.init.ContentHandler;
+import lib.enderwizards.sandstone.init.Content;
 import lib.enderwizards.sandstone.mod.ModRegistry;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.item.EntityItem;
@@ -48,7 +48,7 @@ public class CommandDebug extends CommandBase {
         }
         if (args[0].equals("give")) {
             if (args.length < 4) {
-                Item item = ContentHandler.getItem(args[1].contains(":") ? args[1] : "minecraft:" + args[1]);
+                Item item = Content.DEFAULT.getItem(args[1].contains(":") ? args[1] : "minecraft:" + args[1]);
                 if (item != null) {
                     List<ItemStack> stacks = new ArrayList<ItemStack>();
                     item.getSubItems(item, item.getCreativeTab(), stacks);

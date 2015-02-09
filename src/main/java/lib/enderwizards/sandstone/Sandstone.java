@@ -6,7 +6,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import lib.enderwizards.sandstone.init.ContentHandler;
+import lib.enderwizards.sandstone.init.Content;
 import lib.enderwizards.sandstone.mod.ModIntegration;
 import lib.enderwizards.sandstone.mod.ModRegistry;
 import lib.enderwizards.sandstone.mod.SandstoneMod;
@@ -71,36 +71,39 @@ public class Sandstone {
     /**
      * Initializes SandstoneMod for the current mod. This includes registering the mod, and calling ContentHandler which will handle all your items and blocks. Look at ContentHandler for more information
      */
-    public static void preInit() {
+    public static Content preInit() {
         if (!Loader.instance().isInState(LoaderState.PREINITIALIZATION))
-            return;
+            return null;
 
         ModContainer mod = Loader.instance().activeModContainer();
         SandstoneMod smod = Loader.instance().activeModContainer().getMod().getClass().getAnnotation(SandstoneMod.class);
         if (smod.basePackage().equals("")) {
             LOGGER.error("SandstoneMod " + Loader.instance().activeModContainer().getModId() + "didn't have a basePackage! Ignoring!");
-            return;
+            return null;
         }
 
         ModRegistry.put(mod, smod);
 
+        Content content = new Content(Loader.instance().activeModContainer().getModId());
         ClassLoader classLoader = Loader.instance().activeModContainer().getMod().getClass().getClassLoader();
         try {
-            ContentHandler.init(classLoader, smod.basePackage() + "." + smod.itemsLocation());
+            content.init(classLoader, smod.basePackage() + "." + smod.itemsLocation());
         } catch (Exception e) {
             FMLCommonHandler.instance().raiseException(e, Loader.instance().activeModContainer().getModId() + " failed to initiate items.", true);
         }
 
         try {
-            ContentHandler.init(classLoader, smod.basePackage() + "." + smod.blocksLocation());
+            content.init(classLoader, smod.basePackage() + "." + smod.blocksLocation());
         } catch (Exception e) {
             FMLCommonHandler.instance().raiseException(e, Loader.instance().activeModContainer().getModId() + " failed to initiate blocks.", true);
         }
 
         //sort the object list when we're done.
-        List<String> sortedObjectNames = ContentHandler.registeredObjectNames.subList(0, ContentHandler.registeredObjectNames.size());
+        List<String> sortedObjectNames = content.registeredObjectNames.subList(0, content.registeredObjectNames.size());
         java.util.Collections.sort(sortedObjectNames);
-        ContentHandler.registeredObjectNames = sortedObjectNames;
+        content.registeredObjectNames = sortedObjectNames;
+
+        return content;
     }
 
     public static void postInit() {

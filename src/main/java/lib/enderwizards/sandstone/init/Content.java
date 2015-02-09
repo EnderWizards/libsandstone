@@ -13,30 +13,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ContentHandler takes care of initializing all of your blocks/items for you.
+ * Content takes care of initializing all of your blocks/items for you.
  * <p/>
- * Put the @ContentInit annotation on any block/item class (or subclass) within the blocksPath/itemsPath you assigned for your @SandstoneMod, and ContentHandler will take care of the rest.
- * ContentHandler will ignore any classes and subclasses without the annotation.
+ * Put the @ContentInit annotation on any block/item class (or subclass) within the blocksPath/itemsPath you assigned for your @SandstoneMod, and Content will take care of the rest.
+ * Content will ignore any classes and subclasses without the annotation.
  *
  * @author TheMike
  * @author x3n0ph0b3
  */
-public class ContentHandler {
+public class Content {
+
+    public static Content DEFAULT = new Content("libsandstone");
+
+    //String list that contains all the object identities of blocks and items being added by the initialization routine
+    //this allows the content handler to hold a static list of objects registered, which I can then use
+    //to automate the recipe disabling process. Experimental. Sorry for mucking around in your library, Mike. XD
+    public List<String> registeredObjectNames = new ArrayList<String>();
+
+    private String modId;
+
+    public Content(String modId) {
+        this.modId = modId;
+    }
 
     /**
-     * Initializes ContentHandler to search within packageName for blocks/items.
+     * Initializes Content to search within packageName for blocks/items.
      *
      * @param classLoader The ClassLoader from any class inside the mod. Most reliably, use the class with the @Mod annotation. This must come from a class within the mod's jar file.
      * @param packageName The full package name to search within. It doesn't recursively search in child packages.
      * @throws Exception
      */
-
-    //String list that contains all the object identities of blocks and items being added by the initialization routine
-    //this allows the content handler to hold a static list of objects registered, which I can then use
-    //to automate the recipe disabling process. Experimental. Sorry for mucking around in your library, Mike. XD
-    public static List<String> registeredObjectNames = new ArrayList<String>();
-
-    public static void init(ClassLoader classLoader, String packageName) throws Exception {
+    public void init(ClassLoader classLoader, String packageName) throws Exception {
         // Gets the classpath, and searches it for all classes in packageName.
         ClassPath classPath = ClassPath.from(classLoader);
         for (ClassPath.ClassInfo info : classPath.getTopLevelClasses(packageName)) {
@@ -48,7 +55,7 @@ public class ContentHandler {
         }
     }
 
-    private static void checkAndRegister(Class objClass) throws Exception {
+    private void checkAndRegister(Class objClass) throws Exception {
         if (objClass.isAnnotationPresent(ContentInit.class)) {
             Object obj = objClass.newInstance();
 
@@ -75,46 +82,28 @@ public class ContentHandler {
         }
     }
 
-    /**
-     * Gets a block from Minecraft's block registry.
-     *
-     * @param blockName The name of the block. If a : isn't in blockName, the ID will be resolved based on the caller's package name.
-     * @return The block, or null if it does not exist.
-     */
-    public static Block getBlock(String blockName) {
+    public Block getBlock(String blockName) {
         String selection = blockName;
         if (!selection.contains(":"))
-            selection = ModRegistry.getID(new Exception().getStackTrace()[1].getClassName()) + ":" + selection;
+            selection = ModRegistry.getID(modId) + ":" + selection;
         if (selection.indexOf(":") == 0)
             selection = selection.substring(1);
         return (Block) Block.blockRegistry.getObject(selection);
     }
 
-    /**
-     * Gets a block from Minecraft's item registry.
-     *
-     * @param itemName The name of the item. If a : isn't in blockName, the ID will be resolved based on the caller's package name.
-     * @return The item, or null if it does not exist.
-     */
-    public static Item getItem(String itemName) {
+    public Item getItem(String itemName) {
         String selection = itemName;
         if (!selection.contains(":"))
-            selection = ModRegistry.getID(new Exception().getStackTrace()[1].getClassName()) + ":" + selection;
+            selection = ModRegistry.getID(modId) + ":" + selection;
         if (selection.indexOf(":") == 0)
             selection = selection.substring(1);
         return (Item) Item.itemRegistry.getObject(selection);
     }
 
-    /**
-     * Gets an item block from Minecraft's block registry.
-     *
-     * @param blockName The name of the block. If a : isn't in blockName, the ID will be resolved based on the caller's package name.
-     * @return The item block, or null if it does not exist.
-     */
-    public static Item getItemBlock(String blockName) {
+    public Item getItemBlock(String blockName) {
         String selection = blockName;
         if (!selection.contains(":"))
-            selection = ModRegistry.getID(new Exception().getStackTrace()[1].getClassName()) + ":" + selection;
+            selection = ModRegistry.getID(modId) + ":" + selection;
         if (selection.indexOf(":") == 0)
             selection = selection.substring(1);
         return Item.getItemFromBlock((Block) Block.blockRegistry.getObject(selection));
